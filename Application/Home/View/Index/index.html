@@ -205,53 +205,57 @@
 			  	var user_id = $(event.relatedTarget).data('id');
 			  	var button = $(event.relatedTarget);
 
-			  	$('.enter-socre').on('click', function (event) {
-			  		event.preventDefault();
-					var $modal = $(this).parents('.modal-content');
-					var $radioVal, $inputVal, $checkboxVal = [];
+			  	$(document).on('click', '.enter-socre', enterScore);
 
-					$inputVal = $.trim($modal.find('input[type=text]').val());
-					$radioVal = $modal.find('input:radio:checked').val();
-
-					$.each($modal.find('input:checkbox:checked'), function (index, ele) {
-						$checkboxVal.push($(ele).val());
-					})
-
-					if (!$radioVal || $checkboxVal.length === 0 || !$inputVal) {
-						alert("信息录入不完整");
-					} else {
-						if (!$.isNumeric($inputVal) || $inputVal > 100 || $inputVal < 0) {
-							alert("分数为0-100内的数字");
-						} else {
-							$.ajax({
-								type: 'POST',
-								url: 'score_enter',
-								data: {
-									user_id: user_id,
-									user_score: $inputVal,
-									user_gender: $radioVal,
-									user_dep: $checkboxVal
-								}
-							}).then(function (response, status) {
-								if (response.status === 200 && status === 'success') {
-									var data = response.data;
-									button.parents('tr').find("td").eq(1).html(data.user_gender);
-									button.parents('tr').find("td").eq(4).html(data.user_score);
-									button.parents('tr').find("td").eq(5).html(data.user_dep);
-									button.parents('tr').css("background", "rgb(223, 240, 216)")
-									$('#score').modal('hide');
-								}
-							}, function (XMLHttpRequest) {
-
-							});
-						}
-					}
-			  	});
 			});
+
+			function enterScore(event) {
+		  		event.preventDefault();
+				var $modal = $(this).parents('.modal-content');
+				var $radioVal, $inputVal, $checkboxVal = [];
+
+				$inputVal = $.trim($modal.find('input[type=text]').val());
+				$radioVal = $modal.find('input:radio:checked').val();
+
+				$.each($modal.find('input:checkbox:checked'), function (index, ele) {
+					$checkboxVal.push($(ele).val());
+				});
+
+				if (!$radioVal || $checkboxVal.length === 0 || !$inputVal) {
+					alert("信息录入不完整");
+				} else {
+					if (!$.isNumeric($inputVal) || $inputVal > 100 || $inputVal < 0) {
+						alert("分数为0-100内的数字");
+					} else {
+						$.ajax({
+							type: 'POST',
+							url: 'score_enter',
+							data: {
+								user_id: user_id,
+								user_score: $inputVal,
+								user_gender: $radioVal,
+								user_dep: $checkboxVal
+							}
+						}).then(function (response, status) {
+							if (response.status === 200 && status === 'success') {
+								var data = response.data;
+								button.parents('tr').find("td").eq(1).html(data.user_gender);
+								button.parents('tr').find("td").eq(4).html(data.user_score);
+								button.parents('tr').find("td").eq(5).html(data.user_dep);
+								button.parents('tr').css("background", "rgb(223, 240, 216)")
+								$('#score').modal('hide');
+							}
+						}, function (XMLHttpRequest) {
+
+						});
+					}
+				}
+		  	}
 
 
 
 			function cleanModal (modal) {
+				$(document).off('click', '.enter-socre', enterScore);
 				modal.find('input[type=text]').val('');
 				modal.find('input[type=radio]').attr("checked", false);
 				modal.find('input[type=checkbox]').attr("checked", false);
