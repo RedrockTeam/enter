@@ -128,7 +128,7 @@
                 }
             }*/
 
-            $lists['data'] = $User->limit($Page->firstRow.','.$Page->listRows)->select();
+            $lists['data'] = $User->limit($Page->firstRow.','.$Page->listRows)->order('user_score desc')->select();
             foreach ($lists['data'] as $index => $info) {
                 $lists['data'][$index]['user_dep'] = $this->_depDeal($UserDep->where("user_id = {$info['user_id']}")->getField("dep_name", true));
             }
