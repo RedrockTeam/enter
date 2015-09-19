@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">	
+	<head>
+		<meta charset="UTF-8">
+		<title>学员名单</title>
+		<link rel="stylesheet" href="__PUBLIC__/css/bootstrap.min.css">
+		<link rel="stylesheet" href="__PUBLIC__/css/bootstrap-theme.min.css">
+		<link rel="stylesheet" href="__PUBLIC__/css/page.css">
+		<style>
+			table tr th, table tr td {
+				text-align: center;
+			}
+		</style>
+	</head>
+	<body>
+		
+		
+		<div class="container-fluid">
+
+			<div class="row hidden-print">
+
+				<nav class="navbar navbar-inverse" style="border-radius: 0;">
+				  	<div class="container-fluid">
+					    <div class="navbar-header">
+					      	<a class="navbar-brand" href="#">红岩网校笔试录入系统</a>
+					    </div>
+
+					    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					      	<ul class="nav navbar-nav">
+					        	<li>
+					        		<a href="__CONTROLLER__/index">分数录入</a>
+					        	</li>
+					        	<li class="active">
+					        		<a href="__CONTROLLER__/send_message">短信发送</a>
+					        	</li>
+					        	<li>
+					        		<a href="__CONTROLLER__/add_user">人员添加</a>
+					        	</li>
+					      	</ul>
+				    	</div>
+				  	</div>
+				</nav>
+
+			</div>
+
+		 	<div class="row" style="margin: 20px 0 ;">
+		 		<div class="col-md-10 col-md-offset-1">
+				 	<div>
+
+					  	<ul class="nav nav-tabs hidden-print" role="tablist">
+						    <li>
+						    	<a href="__CONTROLLER__/message/id/1">前端</a>
+						    </li>
+						    <li>
+						    	<a href="__CONTROLLER__/message/id/2">后台</a>
+						    </li>
+						    <li>
+						    	<a href="__CONTROLLER__/message/id/3">iOS</a>
+						    </li>
+						    <li>
+						    	<a href="__CONTROLLER__/message/id/4">Android</a>
+						    </li>
+						    <li>
+						    	<a href="__CONTROLLER__/message/id/5">WP</a>
+						    </li>
+					  	</ul>
+
+					  	<div class="tab-content">
+					    	<div class="tab-pane active" style="padding: 30px 0;">
+					    		<?php if (count($users) === 0) { ?>
+					    			<div class="alert alert-danger" role="alert">暂未录入信息</div>
+								<?php } else { ?>
+						    		<div class="panel panel-default">
+									  	<div class="panel-heading hidden-print">
+									  		<span>学员列表</span>
+									  		<button class="pull-right btn btn btn-xs btn-primary">
+									  			全部发送
+									  		</button>
+									  	</div>
+									  	<table class="table">	
+									  		<thead>
+												<tr>
+													<th>面试编号</th>
+													<th>姓名</th>
+													<th>性别</th>
+													<th>学院</th>
+													<th>电话</th>
+													<th>分数</th>
+													<th>方向</th>
+													<th class="hidden-print">发送短信</th>
+													<th class="visible-print-block">意见</th>
+												</tr>
+											</thead>
+											<tbody>
+												<volist id="v" name="users">
+													<if condition="$v.is_message eq 1">
+														<tr style="background: rgb(223, 240, 216)">
+													<else/>
+														<tr>
+													</if>
+														<td>{$v.user_no}</td>
+														<td>{$v.user_name}</td>
+														<switch name="v['user_gender']" >
+															<case value="1"><td>男</td></case>
+															<case value="0"><td>女</td></case>
+															<default /><td>暂未录入</td>
+														</switch>
+														<td>{$v.user_academy}</td>
+														<td>{$v.user_tel}</td>
+														<if condition="$v.user_score eq ''">
+															<td>暂未录入</td>
+														<else/>
+															<td>{$v.user_score}</td>
+														</if>
+														<if condition="$v.user_dep eq ''">
+															<td>暂未录入</td>
+														<else/>
+															<td>{$v.user_dep}</td>
+														</if>
+														<td class="hidden-print">
+															<if condition="$v.is_message eq 0">
+																<button class="btn btn-xs btn-info send-message" data-no="{$v.user_no}" data-tel="{$v.user_tel}">发送短息</button>
+															<else/>
+																<button class="btn btn-xs btn-info send-message" disabled>已经发送</button>
+															</if>
+														</td>
+														<td class="visible-print-block"></td>
+													</tr>
+												</volist>
+											</tbody>
+										</table>
+									</div>
+								<?php } ?>
+					    	</div>
+					  	</div>
+
+					</div>
+
+				</div>
+			</div>
+
+
+			<div id="score" class="fade modal" role="dialog" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h4 class="modal-title">详细信息</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form class="form-horizontal">
+						 		<div class="form-group">
+							    	<label for="user-socre" class="col-sm-2 control-label">分数</label>
+							    	<div class="col-sm-10">
+							      		<input type="text" class="form-control" id="user-socre">
+							    	</div>
+							  	</div>
+							  	<div class="form-group">
+							    	<label for="user-name" class="col-sm-2 control-label">性别</label>
+							    	<div class="col-sm-10">
+							      		<label class="radio-inline">
+										  	<input type="radio" name="gender" value="1">男
+										</label>
+										<label class="radio-inline">
+										  	<input type="radio" name="gender" value="0">女
+										</label>
+							    	</div>
+							  	</div>
+							  	<div class="form-group">
+							    	<label for="user-name" class="col-sm-2 control-label">方向</label>
+							    	<div class="col-sm-10">
+							      		<label class="checkbox-inline">
+										  	<input type="checkbox" value="1" name="user-dep[]">前端
+										</label>
+										<label class="checkbox-inline">
+										  	<input type="checkbox" value="2" name="user-dep[]">后台
+										</label>
+										<label class="checkbox-inline">
+										  	<input type="checkbox" value="3" name="user-dep[]">iOS
+										</label>
+										<label class="checkbox-inline">
+										  	<input type="checkbox" value="4" name="user-dep[]">Android
+										</label>
+										<label class="checkbox-inline">
+										  	<input type="checkbox" value="5" name="user-dep[]">WP
+										</label>
+							    	</div>
+							  	</div>
+							</form>
+                        </div>
+                        <div class="modal-footer">
+                        	<button type="button" class="btn btn-success enter-socre">确认</button>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+		</div>
+
+
+	</body>
+	<script src="__PUBLIC__/js/jquery-2.0.3.js"></script>
+	<script src="__PUBLIC__/js/bootstrap.min.js"></script>
+	<script>
+
+		$(function () {
+
+			var id = <?php echo "'".I('get.id')."'"; ?>;
+			$('.nav-tabs').find('li').eq(id - 1).addClass('active');
+
+			$('.send-message').on('click', function (event) {
+				var that = this;
+				$.ajax({
+					type: 'POST',
+					url: '../../send_message',
+					data: {
+						user_no: $(this).data('no'),
+						user_tel: $(this).data('tel'),
+					}
+				}).then(function (response, status) {
+					$(that).attr('disabled', 'disabled');
+					if (response.status === 200 && status === 'success') {
+						alert(response.info);
+					} else if (response.status === 100) {
+						alert(response.info);
+					}
+				}, function (XMLHttpRequest) {
+
+				});
+			})
+			
+
+		});
+
+	</script>
+</html>

@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">	
+	<head>
+		<meta charset="UTF-8">
+		<title>录入首页</title>
+		<link rel="stylesheet" href="__PUBLIC__/css/bootstrap.min.css">
+		<link rel="stylesheet" href="__PUBLIC__/css/bootstrap-theme.min.css">
+		<link rel="stylesheet" href="__PUBLIC__/css/page.css">
+		<style>
+			table tr th, table tr td {
+				text-align: center;
+			}
+		</style>
+	</head>
+	<body>
+		
+		
+		<div class="container-fluid">
+
+			<div class="row">
+
+				<nav class="navbar navbar-inverse" style="border-radius: 0;">
+				  	<div class="container-fluid">
+					    <div class="navbar-header">
+					      	<a class="navbar-brand" href="#">红岩网校笔试录入系统</a>
+					    </div>
+
+					    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					      	<ul class="nav navbar-nav">
+					        	<li class="active">
+					        		<a href="__CONTROLLER__/index">分数录入</a>
+					        	</li>
+					        	<li>
+					        		<a href="__CONTROLLER__/message/id/1">短信发送</a>
+					        	</li>
+					        	<li>
+					        		<a href="__CONTROLLER__/add_user">人员添加</a>
+					        	</li>
+					      	</ul>
+				    	</div>
+				  	</div>
+				</nav>
+
+			</div>
+
+		 	<div class="row" style="margin: 20px 0 ;">
+		 		<div class="col-md-10 col-md-offset-1">
+				 	<!-- <form class="form-horizontal" method="post" enctype="multipart/form-data">
+				 		<div class="form-group">
+					    	<label for="user-name" class="col-sm-2 control-label">名字</label>
+					    	<div class="col-sm-10">
+					      		<input type="text" class="form-control" id="user-name">
+					    	</div>
+					  	</div>
+					  	<div class="form-group">
+					    	<label for="user-name" class="col-sm-2 control-label">性别</label>
+					    	<div class="col-sm-10">
+					      		<label class="radio-inline">
+								  	<input type="radio" name="gender" id="inlineRadio1" value="男">男
+								</label>
+								<label class="radio-inline">
+								  	<input type="radio" name="gender" id="inlineRadio2" value="女">女
+								</label>
+					    	</div>
+					  	</div>
+					  	<div class="form-group">
+					    	<label for="excel" class="col-sm-2 control-label">Excel</label>
+					    	<div class="col-sm-10">
+					    		<input type="file" name="excel" id="excel">
+					    	</div>
+					  	</div>
+						<div class="form-group">
+					    	<div class="col-sm-offset-2 col-sm-10">
+					      		<button type="submit" class="btn btn-primary">录入</button>
+					    	</div>
+					  	</div>
+					</form> -->
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th>姓名</th>
+								<th>性别</th>
+								<th>学院</th>
+								<th>电话</th>
+								<th>分数</th>
+								<th>方向</th>
+								<th>完善信息</th>
+							</tr>
+						</thead>
+						<tbody>
+							<volist id="v" name="lists['data']">
+								<if condition="$v.user_score neq ''">
+									<tr style="background: rgb(223, 240, 216)">
+								<else/>
+									<tr>
+								</if>
+									<td>{$v.user_name}</td>
+									<switch name="v['user_gender']" >
+										<case value="1"><td>男</td></case>
+										<case value="0"><td>女</td></case>
+										<default /><td>暂未录入</td>
+									</switch>
+									<td>{$v.user_academy}</td>
+									<td>{$v.user_tel}</td>
+									<if condition="$v.user_score eq ''">
+										<td>暂未录入</td>
+									<else/>
+										<td>{$v.user_score}</td>
+									</if>
+									<if condition="$v.user_dep eq ''">
+										<td>暂未录入</td>
+									<else/>
+										<td>{$v.user_dep}</td>
+									</if>
+									<td>
+										<button class="btn btn-xs btn-info" data-toggle="modal" data-target="#score" data-id="{$v.user_id}">录入</button>
+									</td>
+								</tr>
+							</volist>
+						</tbody>
+					</table>
+	
+					<div id="page">
+						<p style="text-align: center" class="manu">
+							{$lists['page']}
+						</p>
+					</div>
+
+				</div>
+			</div>
+
+
+			<div id="score" class="fade modal" role="dialog" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h4 class="modal-title">详细信息</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form class="form-horizontal">
+						 		<div class="form-group">
+							    	<label for="user-socre" class="col-sm-2 control-label">分数</label>
+							    	<div class="col-sm-10">
+							      		<input type="text" class="form-control" id="user-socre">
+							    	</div>
+							  	</div>
+							  	<div class="form-group">
+							    	<label for="user-name" class="col-sm-2 control-label">性别</label>
+							    	<div class="col-sm-10">
+							      		<label class="radio-inline">
+										  	<input type="radio" name="gender" value="1">男
+										</label>
+										<label class="radio-inline">
+										  	<input type="radio" name="gender" value="0">女
+										</label>
+							    	</div>
+							  	</div>
+							  	<div class="form-group">
+							    	<label for="user-name" class="col-sm-2 control-label">方向</label>
+							    	<div class="col-sm-10">
+							      		<label class="checkbox-inline">
+										  	<input type="checkbox" value="1" name="user-dep[]">前端
+										</label>
+										<label class="checkbox-inline">
+										  	<input type="checkbox" value="2" name="user-dep[]">后台
+										</label>
+										<label class="checkbox-inline">
+										  	<input type="checkbox" value="3" name="user-dep[]">iOS
+										</label>
+										<label class="checkbox-inline">
+										  	<input type="checkbox" value="4" name="user-dep[]">Android
+										</label>
+										<label class="checkbox-inline">
+										  	<input type="checkbox" value="5" name="user-dep[]">WP
+										</label>
+							    	</div>
+							  	</div>
+							</form>
+                        </div>
+                        <div class="modal-footer">
+                        	<button type="button" class="btn btn-success enter-socre">确认</button>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+		</div>
+
+
+	</body>
+	<script src="__PUBLIC__/js/jquery-2.0.3.js"></script>
+	<script src="__PUBLIC__/js/bootstrap.min.js"></script>
+	<script>
+
+		$(function () {
+
+
+			$('#score').on('show.bs.modal', function (event) {
+				cleanModal($(this));
+			  	var user_id = $(event.relatedTarget).data('id');
+			  	var button = $(event.relatedTarget);
+
+			  	$('.enter-socre').on('click', function (event) {
+			  		event.preventDefault();
+					var $modal = $(this).parents('.modal-content');
+					var $radioVal, $inputVal, $checkboxVal = [];
+
+					$inputVal = $.trim($modal.find('input[type=text]').val());
+					$radioVal = $modal.find('input:radio:checked').val();
+
+					$.each($modal.find('input:checkbox:checked'), function (index, ele) {
+						$checkboxVal.push($(ele).val());
+					})
+
+					if (!$radioVal || $checkboxVal.length === 0 || !$inputVal) {
+						alert("信息录入不完整");
+					} else {
+						if (!$.isNumeric($inputVal) || $inputVal > 100 || $inputVal < 0) {
+							alert("分数为0-100内的数字");
+						} else {
+							$.ajax({
+								type: 'POST',
+								url: 'score_enter',
+								data: {
+									user_id: user_id,
+									user_score: $inputVal,
+									user_gender: $radioVal,
+									user_dep: $checkboxVal
+								}
+							}).then(function (response, status) {
+								if (response.status === 200 && status === 'success') {
+									var data = response.data;
+									button.parents('tr').find("td").eq(1).html(data.user_gender);
+									button.parents('tr').find("td").eq(4).html(data.user_score);
+									button.parents('tr').find("td").eq(5).html(data.user_dep);
+									button.parents('tr').css("background", "rgb(223, 240, 216)")
+									$('#score').modal('hide');
+								}
+							}, function (XMLHttpRequest) {
+
+							});
+						}
+					}
+			  	});
+			});
+
+
+
+			function cleanModal (modal) {
+				modal.find('input[type=text]').val('');
+				modal.find('input[type=radio]').attr("checked", false);
+				modal.find('input[type=checkbox]').attr("checked", false);
+			}
+
+
+
+			function enterScore(event) {
+				
+			}
+
+			
+
+		});
+
+	</script>
+</html>
