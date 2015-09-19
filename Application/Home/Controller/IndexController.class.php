@@ -190,11 +190,12 @@
                 $map["user_id"] = $user['user_id'];
                 if ($Message->where($map)->find()) {
                     $user['is_message'] = 1;
-                    $user['user_dep'] = $this->_depDeal($UserDep->where("user_id = $user_id")->getField("dep_name", true));
-                    array_push($users, $user);
                 } else {
-                    continue;
+                    $user['is_message'] = 0;
                 }
+
+                $user['user_dep'] = $this->_depDeal($UserDep->where("user_id = $user_id")->getField("dep_name", true));
+                array_push($users, $user);
             }
 
             $this->assign('users', array_sort($users, 'user_no'));
