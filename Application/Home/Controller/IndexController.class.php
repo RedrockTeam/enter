@@ -196,7 +196,7 @@
                 array_push($users, $user);
             }
 
-            $this->assign('users', $this->sort($users, 'user_score'));
+            $this->assign('users', array_sort($users, 'user_score'));
             $this->display();
         }
 
