@@ -139,6 +139,35 @@
 
 
 
+        private function sort($array, $sort, $field) {
+            $num=count($a);
+            if(!$d){
+                for($i=0;$i<$num;$i++){
+                    for($j=0;$j<$num-1;$j++){
+                        if($a[$j][$sort] > $a[$j+1][$sort]){
+                            foreach ($a[$j] as $key=>$temp){
+                                $t=$a[$j+1][$key];
+                                $a[$j+1][$key]=$a[$j][$key];
+                                $a[$j][$key]=$t;
+                            }
+                        }
+                    }
+                }
+            } else {
+                for($i=0;$i<$num;$i++){
+                    for($j=0;$j<$num-1;$j++){
+                        if($a[$j][$sort] < $a[$j+1][$sort]){
+                            foreach ($a[$j] as $key=>$temp){
+                                $t=$a[$j+1][$key];
+                                $a[$j+1][$key]=$a[$j][$key];
+                                $a[$j][$key]=$t;
+                            }
+                        }
+                    }
+                }
+            }
+            return $a;
+        }
 
 
 
@@ -167,7 +196,7 @@
                 array_push($users, $user);
             }
 
-            $this->assign('users', $users);
+            $this->assign('users', $this->sort($users, 'user_score'));
             $this->display();
         }
 
