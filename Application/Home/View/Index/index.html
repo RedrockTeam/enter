@@ -198,19 +198,28 @@
 	<script>
 
 		
+		$('#score').on('show.bs.modal', function (event) {
+			var user_id = $(event.relatedTarget).data('id');
+			$('#score').attr('data-now-id', user_id);
+		});
 
 
-			$('#score').on('show.bs.modal', function (event) {
-				cleanModal($(this));
-			  	var user_id = $(event.relatedTarget).data('id');
-			  	var button = $(event.relatedTarget);
+			$(document).on('click', '.enter-socre', enterScore);
+			// var user_id;
 
-			  	$(document).on('click', '.enter-socre', enterScore);
+			// $('#score').on('show.bs.modal', function (event) {
+			// 	cleanModal($(this));
+			//   	user_id = $(event.relatedTarget).data('id');
+			//   	var button = $(event.relatedTarget);
 
-			});
+			  	
+
+			// });
 
 			function enterScore(event) {
 		  		event.preventDefault();
+		  		var user_id = $(this).parents('#score').attr('data-now-id');
+		  		
 				var $modal = $(this).parents('.modal-content');
 				var $radioVal, $inputVal, $checkboxVal = [];
 
@@ -239,11 +248,12 @@
 						}).then(function (response, status) {
 							if (response.status === 200 && status === 'success') {
 								var data = response.data;
-								button.parents('tr').find("td").eq(1).html(data.user_gender);
-								button.parents('tr').find("td").eq(4).html(data.user_score);
-								button.parents('tr').find("td").eq(5).html(data.user_dep);
-								button.parents('tr').css("background", "rgb(223, 240, 216)")
-								$('#score').modal('hide');
+								// button.parents('tr').find("td").eq(1).html(data.user_gender);
+								// button.parents('tr').find("td").eq(4).html(data.user_score);
+								// button.parents('tr').find("td").eq(5).html(data.user_dep);
+								// button.parents('tr').css("background", "rgb(223, 240, 216)")
+								// $('#score').modal('hide');
+								location.reload();
 							}
 						}, function (XMLHttpRequest) {
 
