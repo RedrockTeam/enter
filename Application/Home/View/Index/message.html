@@ -83,6 +83,7 @@
 									  	<table class="table">	
 									  		<thead>
 												<tr>
+													<th>ID</th>
 													<th>编号</th>
 													<th>姓名</th>
 													<th>性别</th>
@@ -94,12 +95,13 @@
 												</tr>
 											</thead>
 											<tbody>
-												<volist id="v" name="users">
+												<volist id="v" name="users" key="key">
 													<if condition="$v.is_message eq 1">
 														<tr style="background: rgb(223, 240, 216)">
 													<else/>
 														<tr>
 													</if>
+														<td>{$key}</td>
 														<td>{$v.user_no}</td>
 														<td>{$v.user_name}</td>
 														<switch name="v['user_gender']" >
